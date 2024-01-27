@@ -61,7 +61,8 @@ public record FileService(ResourceLoader resourceLoader, @Value("${storage.direc
 
                     byte[] imageBytes = image.getBytes();
                     String avatar = user.getAvatar();
-                    String avatarName = avatar.split("/")[2];
+                    String[] avatarParts = avatar.split("/");
+                    String avatarName = (avatarParts.length >= 3) ? avatarParts[2] : "";
                     Path imagePath = Paths.get(storageDirectory + File.separator, avatarName);
                     Files.write(imagePath, imageBytes);
 
