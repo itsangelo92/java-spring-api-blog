@@ -102,7 +102,7 @@ public record FileService(ResourceLoader resourceLoader, @Value("${storage.direc
                 response.setHttpStatus(ResponseService.HttpStatus.HTTP_SERVER_ERROR);
             }
         } else {
-            response.setStatus(false);
+            response.setStatus(true);
             response.setMessage(
                     "La imagen: " + storageDirectory + "/" + avatarName + " no existe en el servidor");
             response.setHttpStatus(ResponseService.HttpStatus.HTTP_NOT_FOUND);
