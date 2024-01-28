@@ -61,9 +61,7 @@ public record FileService(ResourceLoader resourceLoader, @Value("${storage.direc
 
                     byte[] imageBytes = image.getBytes();
                     String avatar = user.getAvatar();
-                    String[] avatarParts = avatar.split("/");
-                    String avatarName = (avatarParts.length >= 3) ? avatarParts[2] : "";
-                    Path imagePath = Paths.get(storageDirectory + File.separator, avatarName);
+                    Path imagePath = Paths.get(storageDirectory + File.separator, avatar);
                     Files.write(imagePath, imageBytes);
 
                     response.setStatus(true);
@@ -81,7 +79,7 @@ public record FileService(ResourceLoader resourceLoader, @Value("${storage.direc
             }
         } catch (Exception err) {
             response.setStatus(false);
-            response.setMessage("There were some problems while trying to get the image... Error: \n" + err);
+            response.setMessage("There were some problems while trying to save the image... Error: \n" + err);
             response.setHttpStatus(ResponseService.HttpStatus.HTTP_SERVER_ERROR);
         }
 
