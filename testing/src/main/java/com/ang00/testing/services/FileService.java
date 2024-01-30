@@ -89,7 +89,7 @@ public record FileService(ResourceLoader resourceLoader, @Value("${storage.direc
     public ResponseService deleteImage(String avatarName) {
         ResponseService response = new ResponseService();
 
-        File avatar = new File(storageDirectory + "/" + avatarName);
+        File avatar = new File(storageDirectory + File.separator + avatarName);
         if (avatar.exists()) {
             if (avatar.delete()) {
                 response.setStatus(true);

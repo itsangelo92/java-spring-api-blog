@@ -29,7 +29,7 @@ public class UserService {
             response.setHttpStatus(ResponseService.HttpStatus.OK);
         } catch (Exception err) {
             response.setStatus(false);
-            response.setMessage("There was some problems while saving the user: \n" + err);
+            response.setMessage("There was some problems while getting the users list: \n" + err);
             response.setHttpStatus(ResponseService.HttpStatus.HTTP_SERVER_ERROR);
         }
         return response;

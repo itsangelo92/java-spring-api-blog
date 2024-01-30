@@ -4,7 +4,7 @@ import com.ang00.testing.models.UserModel;
 import com.ang00.testing.services.FileService;
 import com.ang00.testing.services.UserService;
 import com.ang00.testing.services.ResponseService;
-
+import com.ang00.testing.utils.HttpUtil;
 import com.ang00.testing.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -26,7 +26,7 @@ public class UserController {
 
         ResponseService response = userService.getUsers();
 
-        return ResponseEntity.status(getHttpStatus(response)).body(response);
+        return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
     }
 
     @PostMapping(path = "/sign-up")
@@ -41,7 +41,7 @@ public class UserController {
 
         ResponseService response = userService.saveUser(user);
 
-        return ResponseEntity.status(getHttpStatus(response)).body(response);
+        return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
     }
 
     @PostMapping(path = "/login")
@@ -59,7 +59,7 @@ public class UserController {
             response = hashedPassword;
         }
 
-        return ResponseEntity.status(getHttpStatus(response)).body(response);
+        return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
     }
 
     @GetMapping(path = "/user/{id}")
@@ -67,7 +67,7 @@ public class UserController {
 
         ResponseService response = userService.getById(id);
 
-        return ResponseEntity.status(getHttpStatus(response)).body(response);
+        return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
 
     }
 
@@ -75,7 +75,7 @@ public class UserController {
     public ResponseEntity<ResponseService> getAccountFromToken(@RequestHeader("Authorization-Token") String token) {
         ResponseService response = userService.getUserFromToken(token);
 
-        return ResponseEntity.status(getHttpStatus(response)).body(response);
+        return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
     }
 
     @PutMapping(path = "/user/{id}")
@@ -90,7 +90,7 @@ public class UserController {
         user.setEmail(email);
 
         ResponseService updateUser = this.userService.updateById(id, user);
-        return ResponseEntity.status(getHttpStatus(updateUser)).body(updateUser);
+        return ResponseEntity.status(HttpUtil.getHttpStatus(updateUser)).body(updateUser);
     }
 
     @PutMapping("/user/update-avatar")
@@ -133,7 +133,7 @@ public class UserController {
             response = userInformation;
         }
 
-        return ResponseEntity.status(getHttpStatus(response)).body(response);
+        return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
     }
 
     @GetMapping(path = "/user/{userId}/image")
@@ -148,7 +148,7 @@ public class UserController {
         UserModel user = (UserModel) userInformation.getResponse();
         String avatar = user.getAvatar();
         ResponseService response = this.fileService.getImage(avatar);
-        if (getHttpStatus(response) == HttpStatus.OK) {
+        if (HttpUtil.getHttpStatus(response) == HttpStatus.OK) {
             if (response.getStatus()) {
                 byte[] imageBytes = (byte[]) response.getResponse();
 
@@ -170,7 +170,7 @@ public class UserController {
         } else {
             HttpHeaders headers = new HttpHeaders();
             headers.set("ERROR", response.getMessage());
-            httpResponse = new ResponseEntity<>(null, headers, getHttpStatus(response));
+            httpResponse = new ResponseEntity<>(null, headers, HttpUtil.getHttpStatus(response));
         }
 
         return httpResponse;
@@ -180,23 +180,7 @@ public class UserController {
     public ResponseEntity<ResponseService> deleteById(@PathVariable("id") Long id) {
         ResponseService response = this.userService.deleteUser(id);
 
-        return ResponseEntity.status(getHttpStatus(response)).body(response);
-    }
-
-    // Get the HttpStatus from ResponseService OBJECT
-    private HttpStatus getHttpStatus(ResponseService response) {
-        switch (response.getHttpStatus()) {
-            case OK:
-                return HttpStatus.OK;
-            case BAD_REQUEST:
-                return HttpStatus.BAD_REQUEST;
-            case HTTP_NOT_FOUND:
-                return HttpStatus.NOT_FOUND;
-            case CONFLICT:
-                return HttpStatus.CONFLICT;
-            default:
-                return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
+        return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
     }
 
 }
