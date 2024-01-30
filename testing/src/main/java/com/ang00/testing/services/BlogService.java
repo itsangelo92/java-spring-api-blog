@@ -41,8 +41,16 @@ public class BlogService {
         return response;
     }
 
-    public ResponseService newEntry(BlogModel entry) {
+    public ResponseService newEntry(String token, BlogModel entry) {
+        UserService user = new UserService();
         ResponseService response = new ResponseService();
+        ResponseService accountInformation = user.getUserFromToken(token);
+        
+        if(accountInformation.getStatus()) {
+           
+        } else {
+            response = accountInformation;
+        }
 
         return response;
     }

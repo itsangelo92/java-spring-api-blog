@@ -14,8 +14,8 @@ public class BlogModel {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "banner_img")
-    private String bannerImg;
+    @Column(name = "banner_img", columnDefinition = "varchar(255) default 'default.png'")
+    private String bannerImg = "default.png";
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
@@ -57,6 +57,10 @@ public class BlogModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public void setBannerImg(String bannerImg) {

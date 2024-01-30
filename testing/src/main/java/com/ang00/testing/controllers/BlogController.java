@@ -2,6 +2,8 @@ package com.ang00.testing.controllers;
 
 import com.ang00.testing.services.BlogService;
 import com.ang00.testing.services.ResponseService;
+import com.ang00.testing.services.UserService;
+import com.ang00.testing.models.BlogModel;
 import com.ang00.testing.utils.HttpUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,12 @@ public class BlogController {
         ResponseService response = blogService.getEntries();
 
         return ResponseEntity.status(HttpUtil.getHttpStatus(response)).body(response);
+    }
+
+    @PostMapping()
+    public ResponseEntity<ResponseService> newEntry(@RequestHeader("Authorization-Token") String token, @RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("img_banner") MultipartFile imgBanner) {
+        
+       
     }
 
 }
