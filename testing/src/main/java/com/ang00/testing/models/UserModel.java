@@ -24,8 +24,8 @@ public class UserModel {
     @Column(name = "token")
     private String token;
 
-    @Column(name = "avatar", columnDefinition = "varchar(255) default 'default.png'")
-    private String avatar = "default.png";
+    @Column(name = "avatar", columnDefinition = "varchar(255) default 'images/default.png'")
+    private String avatar = "images/default.png";
 
     public Long getId() {
         return id;

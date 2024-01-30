@@ -41,15 +41,19 @@ public class BlogService {
         return response;
     }
 
-    public ResponseService newEntry(String token, BlogModel entry) {
-        UserService user = new UserService();
+    public ResponseService newEntry(BlogModel entry) {
         ResponseService response = new ResponseService();
-        ResponseService accountInformation = user.getUserFromToken(token);
-        
-        if(accountInformation.getStatus()) {
-           
-        } else {
-            response = accountInformation;
+
+        try {
+            BlogModel newEntry = this.blogRepository.save(entry);
+            response.setStatus(true);
+            response.setResponse(newEntry);
+            response.setMessage("Se ha publicado la nueva entrada.");
+            response.setHttpStatus(ResponseService.HttpStatus.OK);
+        } catch (Exception err) {
+            response.setStatus(false);
+            response.setMessage("There was some problems while trying to save the entry... \n" + err);
+            response.setHttpStatus(ResponseService.HttpStatus.HTTP_SERVER_ERROR);
         }
 
         return response;

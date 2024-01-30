@@ -1,6 +1,6 @@
 package com.ang00.testing.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import jakarta.persistence.*;
 
@@ -14,14 +14,14 @@ public class BlogModel {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "banner_img", columnDefinition = "varchar(255) default 'default.png'")
-    private String bannerImg = "default.png";
+    @Column(name = "banner_img", columnDefinition = "varchar(255) default 'banners/default.png'")
+    private String bannerImg = "banners/default.png";
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "date", columnDefinition = "Timestamp default CURRENT_TIMESTAMP()")
+    private Timestamp date;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -43,7 +43,7 @@ public class BlogModel {
         return content;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
@@ -67,12 +67,19 @@ public class BlogModel {
         this.bannerImg = bannerImg;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
     public void setAuthor(UserModel author) {
         this.author = author;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (date == null) {
+            date = new Timestamp(System.currentTimeMillis());
+        }
     }
 
 }
